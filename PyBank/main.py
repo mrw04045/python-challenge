@@ -2,6 +2,7 @@
 import os
 import csv
 
+#-----------------------------------------------------------------------
 # Define path to budget_data.cvs
 csvpath = os.path.join("Resources", "budget_data.csv")
 
@@ -38,7 +39,7 @@ with open(csvpath, newline='') as datafile:
     net_total = sum(ProfitLoss)
 
     #-----------------------------------------------------------------------   
-    # ????Calculate the changes in "Profit/Losses" over the entire period
+    # Calculate the changes in "Profit/Losses" over the entire period
     for x in range(1, len(ProfitLoss)):
         change_PL.append(int(ProfitLoss[x] - ProfitLoss[x-1]))
 
@@ -48,23 +49,40 @@ with open(csvpath, newline='') as datafile:
     #----------------------------------------------------------------------- 
     # Find greatest increase (ie. max) in profits (date and amount) over the entire period
     max_increase = max(change_PL)
-    # Find date associated with max_increase
+    # Find the index associated with the max increase
     index_max = change_PL.index(max_increase)
-    max_date = date[index_max +1]
+    # Find date associated with the max increase 
+    # use +1 because we have no change in PL for first date
+    max_date = date[index_max +1] 
 
     #----------------------------------------------------------------------- 
     # Find greatest decrease (ie. min) in losses (date and amount) over the entire period
     max_decrease = min(change_PL)
-    # Find date associated with max_decrease
+    # Find the index associated with the max decrease
     index_min = change_PL.index(max_decrease)
-    min_date = date[index_min +1]
+    # Find date associated with max_decrease
+    # use +1 because we have no change in PL for first date
+    min_date = date[index_min +1] 
 
 #----------------------------------------------------------------------- 
-# Print out Financial Analysis
-print("Financial Analysis")
-print("----------------------------")
-print(f"Total Months: {total_months}")
-print(f"Total: ${net_total}")
-print(f"Average Change: ${average_change}")
-print(f"Greatest Increase in Profits: {max_date} (${max_increase})")
-print(f"Greatest Decrease in Profits: {min_date} (${max_decrease})")
+# Create variable 'output' as multiple line string containing Financial Analysis 
+output = (f'''
+Financial Analysis
+----------------------------
+Total Months: {total_months}
+Total: ${net_total}
+Average Change: ${average_change}
+Greatest Increase in Profits: {max_date} (${max_increase})
+Greatest Decrease in Profits: {min_date} (${max_decrease})
+''')
+
+# Print output (Financial Analysis)
+print(output)
+
+#----------------------------------------------------------------------- 
+# Open new file(f) 'output.txt' to write output to
+f = open("output.txt",'w')
+
+# Write output(Financial Analysis) to file(f)
+f.write(output)
+
