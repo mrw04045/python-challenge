@@ -16,9 +16,9 @@ with open(csvpath, newline='') as datafile:
     # Move down a line in datafile
     next(datafile)
 
+    #-----------------------------------------------------------------------
+    # Create list of all votes (candidate name only)
     raw_votes = []
-
-    # candidate_data = {}
     for row in csvreader:
         raw_votes.append(row[2])
 
@@ -26,78 +26,44 @@ with open(csvpath, newline='') as datafile:
     # Calculate total votes
     total_votes = len(raw_votes)
 
-        # if row[2] not in candidate_data:
-        #     candidate_data["candidate"] = row[2]
-
+    #-----------------------------------------------------------------------
     c = Counter(raw_votes)
     tally = dict(c)
     winner = max(tally, key=tally.get)
-    print(winner)
-
+  
     #-----------------------------------------------------------------------
     #Calculate total votes for each candidate
     candidates = [*tally.keys()]
     votes_per_candidate = [*tally.values()]
     
-    # votes = list(votes_per_candidate.values())
-    # print(votes)
-
     percent_votes = []
     for x in votes_per_candidate:
         percent = '{:.3%}'.format(x/total_votes)
         percent_votes.append(percent)
-    
-    # winner = max(votes_per_candidate)
-    # print(winner)
-    # print(candidates)
-    # print(votes_per_candidate)
-    # print(percent_votes)
 
 print("Election Results")
 print("-------------------------")
 print(f"Total Votes: {total_votes}")
 print("-------------------------")
 for i in range(len(candidates)):
-    print(f"{candidates[i]}: {percent_votes[i]} ({votes_per_candidate[i]})")
+        print(f"{candidates[i]}: {percent_votes[i]} ({votes_per_candidate[i]})")
 print("-------------------------")
 print(f"Winner: {winner}")
 print("-------------------------")
+    
+#-------------------------------------------------- 
+# Open new file(f) 'output.txt' to write output to
+f = open("output.txt",'w')
 
+# Write output(Financial Analysis) to file(f)
+f.writelines(f'''Election Results
+-------------------------
+Total Votes: {total_votes}
+-------------------------\n''')
 
+for i in range(len(candidates)):
+        f.writelines(f"{candidates[i]}: {percent_votes[i]} ({votes_per_candidate[i]})\n")
 
-
-
-    # candidate_data = {}
-    # for candidate in candidates:
-    #     candidate_data["Name"] = candidate
-    #     print(candidate_data)
-
-    # #-----------------------------------------------------------------------
-    # tally = dict.fromkeys(["candidate","% votes","total votes"])
-
-    # print(tally)
-
-
-#     # Create list for votes and candidates
-#     votes = []
-#     candidates = []
-#     for row in csvreader:
-#         votes.append(row[2])
-#         if row[2] not in candidates:
-#             candidates.append(row[2]) 
-
-   
-
-#     #-----------------------------------------------------------------------
-#     # # Calculate total votes for each candidate
-#     # c = Counter(votes)
-#     # votes_per_candidate = dict(c)
-#     # print(votes_per_candidate)
-#     # votes = list(votes_per_candidate.values())
-#     # print(votes)
-
-
-
-
-
-
+f.writelines(f'''-------------------------
+Winner: {winner}
+-------------------------''')
